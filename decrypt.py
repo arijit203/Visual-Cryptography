@@ -31,9 +31,9 @@ def reconstruct_image(share1_path, share2_path, output_image_path):
             # If any subpixel is black (0 after stacking), the original pixel is black
             # Otherwise, it's white
             if np.any(stacked_subpixels == 0):
-                reconstructed_img[i, j] = 0  # Black pixel
+                reconstructed_img[i, j] = 255  # Black pixel
             else:
-                reconstructed_img[i, j] = 255  # White pixel
+                reconstructed_img[i, j] = 0  # White pixel
 
     # Save the reconstructed image
     cv2.imwrite(output_image_path, reconstructed_img)

@@ -5,20 +5,25 @@ import random
 def generate_shares(image_path, output_share1_path, output_share2_path):
     # Load the binary image
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    _, binary_img = cv2.threshold(img, 127, 1, cv2.THRESH_BINARY)
+    _, binary_img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
 
     # Define sub-pixel patterns for (2, 2) scheme
-    C0 = [
-        [[1, 1, 0, 0], [1, 0, 1, 0]],
-        [[1, 0, 0, 1], [0, 1, 1, 0]],
-        [[0, 1, 1, 0], [1, 0, 0, 1]],
-        [[0, 0, 1, 1], [1, 1, 0, 0]],
-    ]
     C1 = [
+        [[1, 1, 0, 0], [1, 1, 0, 0]],
+        [[1, 0, 1, 0], [1,0, 1, 0]],
+        [[0, 1, 0, 1], [0,1,0,1]],
+        [[0,0,1,1], [0,0, 1, 1]],
+        [[1,0,0,1], [1,0,0,1]],
+        [[0,1,1,0],[0,1,1,0]]
+    ]
+    C0 = [
         [[1, 1, 0, 0], [0, 0, 1, 1]],
         [[1, 0, 1, 0], [0, 1, 0, 1]],
-        [[0, 1, 1, 0], [1, 0, 0, 1]],
+        [[0,1,0,1],[1,0,1,0]],
         [[0, 0, 1, 1], [1, 1, 0, 0]],
+        [[1,0,0,1],[0,1,1,0]],
+        [[0, 1, 1, 0], [1, 0, 0, 1]]
+        
     ]
 
     # Get dimensions
@@ -35,7 +40,7 @@ def generate_shares(image_path, output_share1_path, output_share2_path):
     for i in range(height):
         for j in range(width):
             pixel = binary_img[i, j]  # 0 for black, 1 for white
-            rand_index = (i * width + j) % p % 4  # Modulo operation to get index
+            rand_index = (i * width + j) % p % 6  # Modulo operation to get index
             if pixel == 0:  # Black pixel
                 subpixels = C0[rand_index]
             else:  # White pixel
